@@ -1,4 +1,57 @@
-theme: jekyll-theme-hacker
-title: Redscarf's homepage
-description: 分享我的个人思考!
+remote_theme: cotes2020/jekyll-theme-chirpy
+
 lang: zh-CN
+timezone: Asia/Shanghai
+title: Redscarf's homepage
+tagline: AI · 工程 · 思考
+description: 分享我的个人思考与实践
+url: "https://always-echo.github.io"
+baseurl: ""
+
+theme_mode: dark
+toc: true
+paginate: 8
+permalink: /posts/:title/
+
+github:
+  username: Always-Echo
+social:
+  name: Redscarf
+  links:
+    - https://github.com/Always-Echo
+
+plugins:
+  - jekyll-remote-theme
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+  - jekyll-include-cache
+
+kramdown:
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    css_class: highlight
+    block:
+      line_numbers: true
+      start_line: 1
+
+collections:
+  tabs:
+    output: true
+    sort_by: order
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+      toc: true
+      comments: false
+  - scope:
+      path: ""
+      type: tabs
+    values:
+      layout: page
+      permalink: /:title/
