@@ -8,7 +8,7 @@ description: 分享我的个人思考与实践
 url: "https://always-echo.github.io"
 baseurl: ""
 
-theme_mode: dark
+theme_mode:
 toc: true
 paginate: 8
 
