@@ -1,3 +1,10 @@
+---
+layout: post
+title: "用自然语言编程：Skill 是 AI 时代的新代码"
+date: 2026-03-16 09:00:00 +0800
+categories: [AI, Skill]
+tags: [自然语言编程, Agent, Skill]
+---
 
 一、一个让人豁然开朗的视角
 
