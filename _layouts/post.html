@@ -1,0 +1,134 @@
+---
+layout: default
+---
+
+<article class="post-wrap">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    {% assign plain_content = content | strip_html | strip_newlines %}
+    {% assign reading_minutes = plain_content | size | divided_by: 350 | plus: 1 %}
+    <p class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%Y-%m-%d" }}</time>
+      <span aria-hidden="true">·</span>
+      <span>约 {{ reading_minutes }} 分钟阅读</span>
+    </p>
+    {% if page.tags and page.tags.size > 0 %}
+      <p class="post-tags">
+        {% for tag in page.tags %}
+          <span>#{{ tag }}</span>
+        {% endfor %}
+      </p>
+    {% endif %}
+  </header>
+
+  <aside id="post-toc-wrap" class="post-toc" hidden>
+    <h2>目录</h2>
+    <nav id="post-toc"></nav>
+  </aside>
+
+  <section id="post-content" class="post-content">
+    {{ content }}
+  </section>
+
+  <nav class="post-pagination" aria-label="文章导航">
+    {% if page.previous %}
+      <a class="prev" href="{{ page.previous.url | relative_url }}">← 上一篇：{{ page.previous.title }}</a>
+    {% else %}
+      <span></span>
+    {% endif %}
+    {% if page.next %}
+      <a class="next" href="{{ page.next.url | relative_url }}">下一篇：{{ page.next.title }} →</a>
+    {% endif %}
+  </nav>
+</article>
+
+<style>
+.post-wrap { margin: 0 auto; max-width: 860px; }
+.post-header { border-bottom: 1px solid #e5e7eb; margin-bottom: 24px; padding-bottom: 12px; }
+.post-title { margin-bottom: 8px; }
+.post-meta { color: #6b7280; font-size: 0.95rem; }
+.post-meta span { margin: 0 4px; }
+.post-tags { margin-top: 8px; }
+.post-tags span {
+  background: #eef2ff;
+  border-radius: 999px;
+  color: #3f51b5;
+  display: inline-block;
+  font-size: 0.85rem;
+  margin: 0 8px 8px 0;
+  padding: 4px 10px;
+}
+.post-toc {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+}
+.post-toc h2 { font-size: 1rem; margin: 0 0 8px; }
+.post-toc ul { margin: 0; padding-left: 20px; }
+.post-toc li { margin: 6px 0; }
+.post-toc li.depth-h3 { margin-left: 12px; }
+.post-content { line-height: 1.85; }
+.post-content h2,
+.post-content h3 { scroll-margin-top: 70px; }
+.post-pagination {
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 16px;
+}
+.post-pagination a { font-size: 0.95rem; }
+.post-pagination .next { text-align: right; }
+@media (max-width: 640px) {
+  .post-pagination { flex-direction: column; }
+  .post-pagination .next { text-align: left; }
+}
+</style>
+
+<script>
+(function () {
+  var contentRoot = document.getElementById('post-content');
+  var tocWrap = document.getElementById('post-toc-wrap');
+  var tocRoot = document.getElementById('post-toc');
+  if (!contentRoot || !tocWrap || !tocRoot) return;
+
+  var headings = contentRoot.querySelectorAll('h2, h3');
+  if (!headings.length) return;
+
+  var ul = document.createElement('ul');
+
+  function buildId(text, index) {
+    var clean = text
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9\-_]/g, '');
+    if (!clean) clean = 'section-' + (index + 1);
+    var unique = clean;
+    var seq = 1;
+    while (document.getElementById(unique)) {
+      seq += 1;
+      unique = clean + '-' + seq;
+    }
+    return unique;
+  }
+
+  headings.forEach(function (heading, index) {
+    if (!heading.id) heading.id = buildId(heading.textContent || '', index);
+    var li = document.createElement('li');
+    li.className = heading.tagName.toLowerCase() === 'h3' ? 'depth-h3' : 'depth-h2';
+
+    var a = document.createElement('a');
+    a.href = '#' + heading.id;
+    a.textContent = heading.textContent || '未命名段落';
+
+    li.appendChild(a);
+    ul.appendChild(li);
+  });
+
+  tocRoot.appendChild(ul);
+  tocWrap.hidden = false;
+})();
+</script>
